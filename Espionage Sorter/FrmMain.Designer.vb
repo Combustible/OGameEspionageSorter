@@ -26,8 +26,6 @@ Partial Class FrmMain
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FrmMain))
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Button_Undo = New System.Windows.Forms.Button()
-        Me.Button_Crop = New System.Windows.Forms.Button()
         Me.PictureDown = New System.Windows.Forms.PictureBox()
         Me.PictureUp = New System.Windows.Forms.PictureBox()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -59,6 +57,12 @@ Partial Class FrmMain
         Me.NodeMenu = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.mnuCopy = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuDelete = New System.Windows.Forms.ToolStripMenuItem()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.ExportAllToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CopyAllReportsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EditToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CropListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UndoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.PictureDown, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -67,6 +71,7 @@ Partial Class FrmMain
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.NodeMenu.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -77,16 +82,14 @@ Partial Class FrmMain
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Location = New System.Drawing.Point(12, 12)
+        Me.TabControl1.Location = New System.Drawing.Point(12, 27)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(244, 359)
+        Me.TabControl1.Size = New System.Drawing.Size(244, 341)
         Me.TabControl1.TabIndex = 0
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Button_Undo)
-        Me.TabPage1.Controls.Add(Me.Button_Crop)
         Me.TabPage1.Controls.Add(Me.PictureDown)
         Me.TabPage1.Controls.Add(Me.PictureUp)
         Me.TabPage1.Controls.Add(Me.Label4)
@@ -95,36 +98,16 @@ Partial Class FrmMain
         Me.TabPage1.Location = New System.Drawing.Point(4, 22)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(236, 333)
+        Me.TabPage1.Size = New System.Drawing.Size(236, 315)
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Reports"
         Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'Button_Undo
-        '
-        Me.Button_Undo.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button_Undo.Location = New System.Drawing.Point(3, 308)
-        Me.Button_Undo.Name = "Button_Undo"
-        Me.Button_Undo.Size = New System.Drawing.Size(57, 22)
-        Me.Button_Undo.TabIndex = 6
-        Me.Button_Undo.Text = "Undo"
-        Me.Button_Undo.UseVisualStyleBackColor = True
-        '
-        'Button_Crop
-        '
-        Me.Button_Crop.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Button_Crop.Location = New System.Drawing.Point(3, 280)
-        Me.Button_Crop.Name = "Button_Crop"
-        Me.Button_Crop.Size = New System.Drawing.Size(57, 22)
-        Me.Button_Crop.TabIndex = 5
-        Me.Button_Crop.Text = "Crop List"
-        Me.Button_Crop.UseVisualStyleBackColor = True
         '
         'PictureDown
         '
         Me.PictureDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureDown.Image = Global.Espionage_Sorter.My.Resources.Resources.Arrowdown
-        Me.PictureDown.Location = New System.Drawing.Point(210, 285)
+        Me.PictureDown.Location = New System.Drawing.Point(210, 267)
         Me.PictureDown.Name = "PictureDown"
         Me.PictureDown.Size = New System.Drawing.Size(20, 37)
         Me.PictureDown.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -136,7 +119,7 @@ Partial Class FrmMain
         '
         Me.PictureUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureUp.Image = Global.Espionage_Sorter.My.Resources.Resources.Arrowup
-        Me.PictureUp.Location = New System.Drawing.Point(210, 285)
+        Me.PictureUp.Location = New System.Drawing.Point(210, 267)
         Me.PictureUp.Name = "PictureUp"
         Me.PictureUp.Size = New System.Drawing.Size(20, 37)
         Me.PictureUp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -147,7 +130,7 @@ Partial Class FrmMain
         '
         Me.Label4.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(66, 285)
+        Me.Label4.Location = New System.Drawing.Point(3, 267)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(44, 13)
         Me.Label4.TabIndex = 2
@@ -161,7 +144,7 @@ Partial Class FrmMain
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TreeView.Location = New System.Drawing.Point(0, 0)
         Me.TreeView.Name = "TreeView"
-        Me.TreeView.Size = New System.Drawing.Size(236, 274)
+        Me.TreeView.Size = New System.Drawing.Size(236, 256)
         Me.TreeView.TabIndex = 1
         '
         'Combo_Sort
@@ -171,9 +154,9 @@ Partial Class FrmMain
         Me.Combo_Sort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Combo_Sort.FormattingEnabled = True
         Me.Combo_Sort.Items.AddRange(New Object() {"Fleet Units", "Defense Units", "Coordinates", "Shortest Distance", "Metal", "Crystal ", "Deuterium", "Weighted Resources", "Unweighted Resources"})
-        Me.Combo_Sort.Location = New System.Drawing.Point(69, 301)
+        Me.Combo_Sort.Location = New System.Drawing.Point(6, 283)
         Me.Combo_Sort.Name = "Combo_Sort"
-        Me.Combo_Sort.Size = New System.Drawing.Size(135, 21)
+        Me.Combo_Sort.Size = New System.Drawing.Size(198, 21)
         Me.Combo_Sort.TabIndex = 0
         '
         'TabPage2
@@ -194,7 +177,7 @@ Partial Class FrmMain
         Me.TabPage2.Location = New System.Drawing.Point(4, 22)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(236, 333)
+        Me.TabPage2.Size = New System.Drawing.Size(236, 315)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "General Settings"
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -435,15 +418,58 @@ Partial Class FrmMain
         Me.mnuDelete.Size = New System.Drawing.Size(140, 22)
         Me.mnuDelete.Text = "Delete"
         '
-        'Form1
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ExportAllToolStripMenuItem, Me.EditToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(268, 24)
+        Me.MenuStrip1.TabIndex = 1
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'ExportAllToolStripMenuItem
+        '
+        Me.ExportAllToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CopyAllReportsToolStripMenuItem})
+        Me.ExportAllToolStripMenuItem.Name = "ExportAllToolStripMenuItem"
+        Me.ExportAllToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
+        Me.ExportAllToolStripMenuItem.Text = "File"
+        '
+        'CopyAllReportsToolStripMenuItem
+        '
+        Me.CopyAllReportsToolStripMenuItem.Name = "CopyAllReportsToolStripMenuItem"
+        Me.CopyAllReportsToolStripMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.CopyAllReportsToolStripMenuItem.Text = "Copy all reports"
+        '
+        'EditToolStripMenuItem
+        '
+        Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CropListToolStripMenuItem, Me.UndoToolStripMenuItem})
+        Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(39, 20)
+        Me.EditToolStripMenuItem.Text = "Edit"
+        '
+        'CropListToolStripMenuItem
+        '
+        Me.CropListToolStripMenuItem.Name = "CropListToolStripMenuItem"
+        Me.CropListToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
+        Me.CropListToolStripMenuItem.Text = "Crop List"
+        '
+        'UndoToolStripMenuItem
+        '
+        Me.UndoToolStripMenuItem.Name = "UndoToolStripMenuItem"
+        Me.UndoToolStripMenuItem.Size = New System.Drawing.Size(121, 22)
+        Me.UndoToolStripMenuItem.Text = "Undo"
+        '
+        'FrmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(276, 385)
+        Me.ClientSize = New System.Drawing.Size(268, 380)
+        Me.Controls.Add(Me.MenuStrip1)
         Me.Controls.Add(Me.TabControl1)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.MinimumSize = New System.Drawing.Size(284, 419)
-        Me.Name = "Form1"
+        Me.Name = "FrmMain"
         Me.Text = "Espionage Sorter"
         Me.TopMost = True
         Me.TabControl1.ResumeLayout(False)
@@ -458,7 +484,10 @@ Partial Class FrmMain
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.NodeMenu.ResumeLayout(False)
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
@@ -487,8 +516,6 @@ Partial Class FrmMain
     Friend WithEvents Label4 As System.Windows.Forms.Label
     Friend WithEvents PictureDown As System.Windows.Forms.PictureBox
     Friend WithEvents PictureUp As System.Windows.Forms.PictureBox
-    Friend WithEvents Button_Undo As System.Windows.Forms.Button
-    Friend WithEvents Button_Crop As System.Windows.Forms.Button
     Friend WithEvents NodeMenu As System.Windows.Forms.ContextMenuStrip
     Friend WithEvents mnuCopy As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents mnuDelete As System.Windows.Forms.ToolStripMenuItem
@@ -496,5 +523,11 @@ Partial Class FrmMain
     Friend WithEvents RadioDelete As System.Windows.Forms.RadioButton
     Friend WithEvents RadioAsk As System.Windows.Forms.RadioButton
     Friend WithEvents RadioIgnore As System.Windows.Forms.RadioButton
+    Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
+    Friend WithEvents ExportAllToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CopyAllReportsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents EditToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents CropListToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents UndoToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 
 End Class

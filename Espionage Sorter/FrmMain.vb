@@ -464,27 +464,6 @@
         Refresh_Tree_Name()
     End Sub
 
-    Private Sub Button_Crop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_Crop.Click
-        Dim Counter As Integer = 1
-        Dim Node As TreeNode
-
-        TreeView.Hide()
-        If TreeView.Nodes.Count > 0 Then
-            Node = TreeView.Nodes.Item(0)
-            While Not (Node.NextNode Is Nothing)
-                Node = Node.NextNode
-                If Counter > Val(Text_Crop.Text) Then
-                    DestroyNode(Node.PrevNode)
-                End If
-                Counter += 1
-            End While
-            If Counter > Val(Text_Crop.Text) Then
-                DestroyNode(Node)
-            End If
-        End If
-        TreeView.Show()
-    End Sub
-
     Private Sub DestroyNode(ByVal Node As TreeNode)
         UndoList.Add(Node.Tag)
 
@@ -531,14 +510,6 @@
 
     Private Sub Check_Expand_Second_CheckedChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles Check_Expand_Second.CheckedChanged
         Expand_List()
-    End Sub
-
-    Private Sub Button_Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button_Undo.Click
-        If Not UndoList.Head Is Nothing Then
-            TreeView.Nodes.Add(UndoList.Head.Info.GetNode())
-            UndoList.Remove()
-            Sort_List()
-        End If
     End Sub
 
     Private Sub Text_Coords_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Text_Coords.TextChanged
@@ -605,6 +576,50 @@
         Loop
         Return ReturnString
     End Function
+
+    Private Sub CropListToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CropListToolStripMenuItem.Click
+        Dim Counter As Integer = 1
+        Dim Node As TreeNode
+
+        TreeView.Hide()
+        If TreeView.Nodes.Count > 0 Then
+            Node = TreeView.Nodes.Item(0)
+            While Not (Node.NextNode Is Nothing)
+                Node = Node.NextNode
+                If Counter > Val(Text_Crop.Text) Then
+                    DestroyNode(Node.PrevNode)
+                End If
+                Counter += 1
+            End While
+            If Counter > Val(Text_Crop.Text) Then
+                DestroyNode(Node)
+            End If
+        End If
+        TreeView.Show()
+    End Sub
+
+    Private Sub UndoToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UndoToolStripMenuItem.Click
+        If Not UndoList.Head Is Nothing Then
+            TreeView.Nodes.Add(UndoList.Head.Info.GetNode())
+            UndoList.Remove()
+            Sort_List()
+        End If
+    End Sub
+
+    Private Sub CopyAllReportsToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CopyAllReportsToolStripMenuItem.Click
+        Dim TempNode As TreeNode
+        Dim ResultTxt As String = ""
+
+        If TreeView.Nodes.Count > 0 Then
+            TempNode = TreeView.Nodes.Item(0)
+            While Not (TempNode Is Nothing)
+                ResultTxt = ResultTxt + vbCrLf + vbCrLf + TempNode.Tag.Report()
+                TempNode = TempNode.NextNode
+            End While
+        End If
+
+        Clipboard.SetText(ResultTxt)
+    End Sub
 End Class
 
 Public Class Information
