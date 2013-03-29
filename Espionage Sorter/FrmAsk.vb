@@ -1,4 +1,4 @@
-﻿Public Class AskForm
+﻿Public Class FrmAsk
     Public Sub New(ByVal Node1 As TreeNode, ByVal Node2 As TreeNode)
         InitializeComponent()
         TreeView1.Nodes.Add(Node1.Clone())

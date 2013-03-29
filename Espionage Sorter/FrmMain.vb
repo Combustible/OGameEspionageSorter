@@ -1,4 +1,4 @@
-﻿Public Class Form1
+﻿Public Class FrmMain
     Public SortUp As Boolean
     Public HomeCoords As New Coords
     Public UndoList As New LinkedList
@@ -311,113 +311,53 @@
             Values.Coordinates.Str = Report.Remove(InStr(Report, "]"))
 
             'Name
-            Report = Report.Remove(0, InStr(Report, "Player: "))
+            Report = Report.Remove(0, InStr(Report, "Player: ") + Len("Player: ") - 1)
             Values.Name = Report.Remove(InStr(Report, ")") - 1)
 
             'Metal
-            Report = Report.Remove(0, InStr(Report, "Metal") + 5)
-            Values.Metal = Numberfy(Report.Remove(InStr(Report, "Crystal") - 1))
-
-            Report = Report.Remove(0, InStr(Report, "Crystal") + 7)
-            Values.Crystal = Numberfy(Report.Remove(InStr(Report, "Deuterium") - 1))
-
-            'Deuterium
-            Report = Report.Remove(0, InStr(Report, "Deuterium") + 9)
-            Values.Deuterium = Numberfy(Report.Remove(InStr(Report, "Energy") - 1))
+            Values.Metal = ExtractNextNumber(Report.Remove(0, InStr(Report, "Metal") + 5).Remove(InStr(Report, "Crystal") - 1))
+            Values.Crystal = ExtractNextNumber(Report.Remove(0, InStr(Report, "Crystal") + 7).Remove(InStr(Report, "Deuterium") - 1))
+            Values.Deuterium = ExtractNextNumber(Report.Remove(0, InStr(Report, "Deuterium") + 9).Remove(InStr(Report, "Energy") - 1))
 
             'Fleet
             If InStr(Report, "fleets") > 0 Then
                 Values.Fleet = True
-                If InStr(Report, "Light Fighter") > 0 Then
-                    Values.Light = Numberfy(Report.Remove(0, InStr(Report, "Light Fighter") + Len("Light Fighter") - 1))
-                End If
-                If InStr(Report, "Heavy Fighter") > 0 Then
-                    Values.Heavy = Numberfy(Report.Remove(0, InStr(Report, "Heavy Fighter") + Len("Heavy Fighter") - 1))
-                End If
-                If InStr(Report, "Small Cargo") > 0 Then
-                    Values.Small = Numberfy(Report.Remove(0, InStr(Report, "Small Cargo") + Len("Small Cargo") - 1))
-                End If
-                If InStr(Report, "Large Cargo") > 0 Then
-                    Values.Large = Numberfy(Report.Remove(0, InStr(Report, "Large Cargo") + Len("Large Cargo") - 1))
-                End If
-                If InStr(Report, "Espionage Probe") > 0 Then
-                    Values.Probe = Numberfy(Report.Remove(0, InStr(Report, "Espionage Probe") + Len("Espionage Probe") - 1))
-                End If
-                If InStr(Report, "Solar Satellite") > 0 Then
-                    Values.Sat = Numberfy(Report.Remove(0, InStr(Report, "Solar Satellite") + Len("Solar Satellite") - 1))
-                End If
-                If InStr(Report, "Recycler") > 0 Then
-                    Values.Recycler = Numberfy(Report.Remove(0, InStr(Report, "Recycler") + Len("Recycler") - 1))
-                End If
-                If InStr(Report, "Colony Ship") > 0 Then
-                    Values.Colony = Numberfy(Report.Remove(0, InStr(Report, "Colony Ship") + Len("Colony Ship") - 1))
-                End If
-                If InStr(Report, "Cruiser") > 0 Then
-                    Values.Cruiser = Numberfy(Report.Remove(0, InStr(Report, "Cruiser") + Len("Cruiser") - 1))
-                End If
-                If InStr(Report, "Battleship") > 0 Then
-                    Values.BShip = Numberfy(Report.Remove(0, InStr(Report, "Battleship") + Len("Battleship") - 1))
-                End If
-                If InStr(Report, "Battlecruiser") > 0 Then
-                    Values.BCruiser = Numberfy(Report.Remove(0, InStr(Report, "Battlecruiser") + Len("Battlecruiser") - 1))
-                End If
-                If InStr(Report, "Bomber") > 0 Then
-                    Values.Bomber = Numberfy(Report.Remove(0, InStr(Report, "Bomber") + Len("Bomber") - 1))
-                End If
-                If InStr(Report, "Destroyer") > 0 Then
-                    Values.Destroyer = Numberfy(Report.Remove(0, InStr(Report, "Destroyer") + Len("Destroyer") - 1))
-                End If
-                If InStr(Report, "RIP") > 0 Then
-                    Values.RIP = Numberfy(Report.Remove(0, InStr(Report, "RIP") + Len("RIP") - 1))
-                End If
-                If InStr(Report, "Death Star") > 0 Then
-                    Values.RIP = Numberfy(Report.Remove(0, InStr(Report, "Death Star") + Len("Death Star") - 1))
-                End If
+                Values.Light = ParseSubItem(Report, "Light Fighter")
+                Values.Heavy = ParseSubItem(Report, "Heavy Fighter")
+                Values.Small = ParseSubItem(Report, "Small Cargo")
+                Values.Large = ParseSubItem(Report, "Large Cargo")
+                Values.Probe = ParseSubItem(Report, "Espionage Probe")
+                Values.Sat = ParseSubItem(Report, "Solar Satellite")
+                Values.Recycler = ParseSubItem(Report, "Recycler")
+                Values.Colony = ParseSubItem(Report, "Colony Ship")
+                Values.Cruiser = ParseSubItem(Report, "Cruiser")
+                Values.BShip = ParseSubItem(Report, "Battleship")
+                Values.BCruiser = ParseSubItem(Report, "Battlecruiser")
+                Values.Bomber = ParseSubItem(Report, "Bomber")
+                Values.Destroyer = ParseSubItem(Report, "Destroyer")
+                Values.RIP = ParseSubItem(Report, "RIP") + ParseSubItem(Report, "Death Star")
 
                 If InStr(Report, "Defense") > 0 Then
                     Values.Defense = True
-                    If InStr(Report, "Rocket Launcher") > 0 Then
-                        Values.Rocket = Numberfy(Report.Remove(0, InStr(Report, "Rocket Launcher") + Len("Rocket Launcher") - 1))
-                    End If
-                    If InStr(Report, "Light Laser") > 0 Then
-                        Values.LLaser = Numberfy(Report.Remove(0, InStr(Report, "Light Laser") + Len("Light Laser") - 1))
-                    End If
-                    If InStr(Report, "Heavy Laser") > 0 Then
-                        Values.HLaser = Numberfy(Report.Remove(0, InStr(Report, "Heavy Laser") + Len("Heavy Laser") - 1))
-                    End If
-                    If InStr(Report, "Ion Cannon") > 0 Then
-                        Values.Ion = Numberfy(Report.Remove(0, InStr(Report, "Ion Cannon") + Len("Ion Cannon") - 1))
-                    End If
-                    If InStr(Report, "Gauss Cannon") > 0 Then
-                        Values.Gauss = Numberfy(Report.Remove(0, InStr(Report, "Gauss Cannon") + Len("Gauss Cannon") - 1))
-                    End If
-                    If InStr(Report, "Plasma Turret") > 0 Then
-                        Values.Plasma = Numberfy(Report.Remove(0, InStr(Report, "Plasma Turret") + Len("Plasma Turret") - 1))
-                    End If
-                    If InStr(Report, "Small Shield Dome") > 0 Then
-                        Values.SShield = Numberfy(Report.Remove(0, InStr(Report, "Small Shield Dome") + Len("Small Shield Dome") - 1))
-                    End If
-                    If InStr(Report, "Large Shield") > 0 Then
-                        Values.LShield = Numberfy(Report.Remove(0, InStr(Report, "Large Shield Dome") + Len("Large Shield Dome") - 1))
-                    End If
-                    If InStr(Report, "Anti-Ballistic Missiles") > 0 Then
-                        Values.ABM = Numberfy(Report.Remove(0, InStr(Report, "Anti-Ballistic Missiles") + Len("Anti-Ballistic Missiles") - 1))
-                    End If
+
+                    Values.Rocket = ParseSubItem(Report, "Rocket Launcher")
+                    Values.LLaser = ParseSubItem(Report, "Light Laser")
+                    Values.HLaser = ParseSubItem(Report, "Heavy Laser")
+                    Values.Ion = ParseSubItem(Report, "Ion Cannon")
+                    Values.Gauss = ParseSubItem(Report, "Gauss Cannon")
+                    Values.Plasma = ParseSubItem(Report, "Plasma Turret")
+                    Values.SShield = ParseSubItem(Report, "Small Shield Dome")
+                    Values.LShield = ParseSubItem(Report, "Large Shield Dome")
+                    Values.ABM = ParseSubItem(Report, "Anti-Ballistic Missiles")
 
                     If InStr(Report, "Research Lab") Then
                         Report = Report.Remove(0, InStr(Report, "Research Lab"))
                     End If
                     If InStr(Report, "Research") > 0 Then
                         Values.Research = True
-                        If InStr(Report, "Weapons Technology") > 0 Then
-                            Values.Weapon = Numberfy(Report.Remove(0, InStr(Report, "Weapons Technology") + Len("Weapons Technology") - 1))
-                        End If
-                        If InStr(Report, "Shielding Technology") > 0 Then
-                            Values.Shield = Numberfy(Report.Remove(0, InStr(Report, "Shielding Technology") + Len("Shielding Technology") - 1))
-                        End If
-                        If InStr(Report, "Armour Technology") > 0 Then
-                            Values.Armor = Numberfy(Report.Remove(0, InStr(Report, "Armour Technology") + Len("Armour Technology") - 1))
-                        End If
+                        Values.Weapon = ParseSubItem(Report, "Weapons Technology")
+                        Values.Shield = ParseSubItem(Report, "Shielding Technology")
+                        Values.Armor = ParseSubItem(Report, "Armour Technology")
                     End If
                 End If
             End If
@@ -429,7 +369,7 @@
                     Do Until Checknode Is Nothing Or Tempnode Is Nothing
                         If (Not (Tempnode Is Checknode)) And Checknode.Tag.Coordinates.Str = Tempnode.Tag.Coordinates.Str Then
                             If RadioAsk.Checked = True Then
-                                Dim NewForm As New AskForm(Tempnode, Checknode)
+                                Dim NewForm As New FrmAsk(Tempnode, Checknode)
                                 NewForm.ShowDialog()
                                 Select Case NewForm.DialogResult
                                     Case Windows.Forms.DialogResult.Yes
@@ -470,20 +410,27 @@
         Sort_List()
     End Sub
 
-    Private Function Numberfy(ByVal TempString As String) As Integer
-        Dim Enumerator As IEnumerator = TempString.GetEnumerator
-        TempString = ""
+    Private Function ParseSubItem(ByVal Report As String, ByVal SearchString As String) As Integer
+        If Report.Contains(SearchString) Then
+            Return ExtractNextNumber(Report.Remove(0, InStr(Report, SearchString) + Len(SearchString) - 1))
+        Else
+            Return 0
+        End If
+    End Function
+
+    Private Function ExtractNextNumber(ByVal ParseText As String)
+        Dim Enumerator As IEnumerator = ParseText.GetEnumerator()
+        Dim ReturnValueString As String = ""
         Do While Enumerator.MoveNext()
             If IsNumeric(Enumerator.Current) Then
-                TempString = TempString + Enumerator.Current
+                ReturnValueString = ReturnValueString + Enumerator.Current
             Else
                 If Enumerator.Current <> " " And Enumerator.Current <> "." And Asc(Enumerator.Current) <> 9 Then
                     Exit Do
                 End If
             End If
         Loop
-        Return (Val(TempString))
-
+        Return CInt(ReturnValueString)
     End Function
 
     Private Sub Refresh_Tree_Name()
@@ -737,7 +684,7 @@ Public Class Information
     End Property
     Public Property WeightedResources() As Integer
         Get
-            Return (Metal * Int(Val(Form1.Text_Weight_Metal.Text)) + Crystal * Int(Val(Form1.Text_Weight_Crystal.Text)) + Deuterium * Int(Val(Form1.Text_Weight_Deuterium.Text)))
+            Return (Metal * Int(Val(FrmMain.Text_Weight_Metal.Text)) + Crystal * Int(Val(FrmMain.Text_Weight_Crystal.Text)) + Deuterium * Int(Val(FrmMain.Text_Weight_Deuterium.Text)))
         End Get
         Set(ByVal Value As Integer)
             Value = Nothing
@@ -1004,7 +951,7 @@ Public Class Information
         End Set
     End Property
 
-    Public Property Color() As System.Drawing.Color
+    Public ReadOnly Property Color() As System.Drawing.Color
         Get
             ' 1 = Unknown = Purple
             ' 2 = Safe = Blue
@@ -1034,14 +981,11 @@ Public Class Information
                 Return System.Drawing.Color.Black
             End If
         End Get
-        Set(ByVal Value As System.Drawing.Color)
-
-        End Set
     End Property
     Public Property TreeName() As String
         Get
             Dim Storage As Integer = 5000
-            Select Case Form1.Combo_Ship.SelectedItem
+            Select Case FrmMain.Combo_Ship.SelectedItem
                 Case "Small Cargo"
                     Storage = 5000
                 Case "Large Cargo"
@@ -1063,7 +1007,7 @@ Public Class Information
                 Case "Battlecruiser"
                     Storage = 750
             End Select
-            Return (Coordinates.Str + " - " + Form1.NumString(Metal * Val(Form1.Text_Weight_Metal.Text) + Crystal * Val(Form1.Text_Weight_Crystal.Text) + Deuterium * Val(Form1.Text_Weight_Deuterium.Text)) + " - " + Trim(Str(Int(TotalResources / (2 * Storage)) + 1)) + " - " + Name)
+            Return (Coordinates.Str + " - " + FrmMain.NumString(Metal * Val(FrmMain.Text_Weight_Metal.Text) + Crystal * Val(FrmMain.Text_Weight_Crystal.Text) + Deuterium * Val(FrmMain.Text_Weight_Deuterium.Text)) + " - " + Trim(Str(Int(TotalResources / (2 * Storage)) + 1)) + " - " + Name)
         End Get
         Set(ByVal Value As String)
 
@@ -1092,92 +1036,92 @@ Public Class Information
 
             Node.Text = TreeName
             Node.Name = TreeName
-            Node = Node.Nodes.Add(Form1.NumString(Metal) + "   " + Form1.NumString(Crystal) + "   " + Form1.NumString(Deuterium))
+            Node = Node.Nodes.Add(FrmMain.NumString(Metal) + "   " + FrmMain.NumString(Crystal) + "   " + FrmMain.NumString(Deuterium))
 
             If Fleet = True Then
-                Node = Node.Nodes.Add("Fleet - " + Form1.NumString(FleetUnits))
+                Node = Node.Nodes.Add("Fleet - " + FrmMain.NumString(FleetUnits))
                 If FleetUnits > 0 Then
                     Node.ForeColor = Color.Red
                 Else
                     Node.ForeColor = Color.Blue
                 End If
                 If Light > 0 Then
-                    Node.Nodes.Add("Light Fighter - " + Form1.NumString(Light))
+                    Node.Nodes.Add("Light Fighter - " + FrmMain.NumString(Light))
                 End If
                 If Heavy > 0 Then
-                    Node.Nodes.Add("Heavy Fighter - " + Form1.NumString(Heavy))
+                    Node.Nodes.Add("Heavy Fighter - " + FrmMain.NumString(Heavy))
                 End If
                 If Small > 0 Then
-                    Node.Nodes.Add("Small Cargo - " + Form1.NumString(Small))
+                    Node.Nodes.Add("Small Cargo - " + FrmMain.NumString(Small))
                 End If
                 If Large > 0 Then
-                    Node.Nodes.Add("Large Cargo - " + Form1.NumString(Large))
+                    Node.Nodes.Add("Large Cargo - " + FrmMain.NumString(Large))
                 End If
                 If Probe > 0 Then
-                    Node.Nodes.Add("Espionage Probe - " + Form1.NumString(Probe))
+                    Node.Nodes.Add("Espionage Probe - " + FrmMain.NumString(Probe))
                 End If
                 If Sat > 0 Then
-                    Node.Nodes.Add("Solar Satellite - " + Form1.NumString(Sat))
+                    Node.Nodes.Add("Solar Satellite - " + FrmMain.NumString(Sat))
                 End If
                 If Recycler > 0 Then
-                    Node.Nodes.Add("Recycler - " + Form1.NumString(Recycler))
+                    Node.Nodes.Add("Recycler - " + FrmMain.NumString(Recycler))
                 End If
                 If Colony > 0 Then
-                    Node.Nodes.Add("Colony Ship - " + Form1.NumString(Colony))
+                    Node.Nodes.Add("Colony Ship - " + FrmMain.NumString(Colony))
                 End If
                 If Cruiser > 0 Then
-                    Node.Nodes.Add("Cruiser - " + Form1.NumString(Cruiser))
+                    Node.Nodes.Add("Cruiser - " + FrmMain.NumString(Cruiser))
                 End If
                 If BShip > 0 Then
-                    Node.Nodes.Add("Battleship - " + Form1.NumString(BShip))
+                    Node.Nodes.Add("Battleship - " + FrmMain.NumString(BShip))
                 End If
                 If BCruiser > 0 Then
-                    Node.Nodes.Add("Battlecruiser - " + Form1.NumString(BCruiser))
+                    Node.Nodes.Add("Battlecruiser - " + FrmMain.NumString(BCruiser))
                 End If
                 If Bomber > 0 Then
-                    Node.Nodes.Add("Bomber - " + Form1.NumString(Bomber))
+                    Node.Nodes.Add("Bomber - " + FrmMain.NumString(Bomber))
                 End If
                 If Destroyer > 0 Then
-                    Node.Nodes.Add("Destroyer - " + Form1.NumString(Destroyer))
+                    Node.Nodes.Add("Destroyer - " + FrmMain.NumString(Destroyer))
                 End If
                 If RIP > 0 Then
-                    Node.Nodes.Add("RIP - " + Form1.NumString(RIP))
+                    Node.Nodes.Add("RIP - " + FrmMain.NumString(RIP))
                 End If
                 Node = Node.Parent
 
                 If Defense = True Then
-                    Node = Node.Nodes.Add("Defense - " + Form1.NumString(DefenseUnits))
+                    Node = Node.Nodes.Add("Defense - " + FrmMain.NumString(DefenseUnits))
                     If DefenseUnits > 0 Then
                         Node.ForeColor = Color.Red
                     Else
                         Node.ForeColor = Color.Blue
                     End If
                     If Rocket > 0 Then
-                        Node.Nodes.Add("Rocket Launcher - " + Form1.NumString(Rocket))
+                        Node.Nodes.Add("Rocket Launcher - " + FrmMain.NumString(Rocket))
                     End If
                     If LLaser > 0 Then
-                        Node.Nodes.Add("Light Laser - " + Form1.NumString(LLaser))
+                        Node.Nodes.Add("Light Laser - " + FrmMain.NumString(LLaser))
                     End If
                     If HLaser > 0 Then
-                        Node.Nodes.Add("Heavy Laser - " + Form1.NumString(HLaser))
+                        Node.Nodes.Add("Heavy Laser - " + FrmMain.NumString(HLaser))
                     End If
                     If Ion > 0 Then
-                        Node.Nodes.Add("Ion - " + Form1.NumString(Ion))
+                        Node.Nodes.Add("Ion - " + FrmMain.NumString(Ion))
                     End If
                     If Gauss > 0 Then
-                        Node.Nodes.Add("Gauss Cannon - " + Form1.NumString(Gauss))
+                        Node.Nodes.Add("Gauss Cannon - " + FrmMain.NumString(Gauss))
                     End If
                     If Plasma > 0 Then
-                        Node.Nodes.Add("Plasma Turret - " + Form1.NumString(Plasma))
+                        Node.Nodes.Add("Plasma Turret - " + FrmMain.NumString(Plasma))
                     End If
                     If SShield > 0 Then
-                        Node.Nodes.Add("Small Shield Dome - " + Form1.NumString(SShield))
+                        Node.Nodes.Add("Small Shield Dome - " + FrmMain.NumString(SShield))
                     End If
                     If LShield > 0 Then
-                        Node.Nodes.Add("Large Shield Dome - " + Form1.NumString(LShield))
+                        Node.Nodes.Add("Large Shield Dome - " + FrmMain.NumString(LShield))
                     End If
                     If ABM > 0 Then
-                        Node.Nodes.Add("Anti-Ballistic Missiles - " + Form1.NumString(ABM)).ForeColor = Color.Blue
+                        Node.Nodes.Add("Anti-Ballistic Missiles - " + FrmMain.NumString(ABM)).ForeColor = Color.Blue
                     End If
                     Node = Node.Parent
 
@@ -1187,16 +1131,16 @@ Public Class Information
                 End If
             End If
 
-            If Form1.Check_Expand_Second.Checked = True Then
+            If FrmMain.Check_Expand_Second.Checked = True Then
                 Node.Expand()
             End If
             Node = Node.Parent
-            If Form1.Check_Expand_First.Checked = True Or Form1.Check_Expand_Second.Checked = True Then
+            If FrmMain.Check_Expand_First.Checked = True Or FrmMain.Check_Expand_Second.Checked = True Then
                 Node.Expand()
             End If
             Node.Tag = Me
             Node.ForeColor = Color
-            Node.ContextMenuStrip = Form1.NodeMenu
+            Node.ContextMenuStrip = FrmMain.NodeMenu
             Return Node
         End Get
     End Property
@@ -1210,120 +1154,76 @@ Public Class NodeSorter
         Dim ty As TreeNode = CType(y, TreeNode)
         Dim Infox As Information = tx.Tag
         Dim Infoy As Information = ty.Tag
+
+        Dim DirModifier As Integer
+        If FrmMain.SortUp = True Then
+            DirModifier = 1
+        Else
+            DirModifier = -1
+        End If
+
         If Not (Infox Is Nothing) And Not (Infoy Is Nothing) Then
-            Select Case (Form1.Combo_Sort.SelectedItem)
+            Select Case (FrmMain.Combo_Sort.SelectedItem)
                 Case "Fleet Units"
                     If Infox.FleetUnits <> Infoy.FleetUnits Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.FleetUnits - Infox.FleetUnits
-                        Else
-                            Return Infox.FleetUnits - Infoy.FleetUnits
-                        End If
+                        Return DirModifier * (Infoy.FleetUnits - Infox.FleetUnits)
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Defense Units"
                     If Infox.DefenseUnits <> Infoy.DefenseUnits Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.DefenseUnits - Infox.DefenseUnits
-                        Else
-                            Return Infox.DefenseUnits - Infoy.DefenseUnits
-                        End If
+                        Return DirModifier * (Infoy.DefenseUnits - Infox.DefenseUnits)
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Coordinates"
                     If Infox.Coordinates.Str <> Infoy.Coordinates.Str Then
                         If Infox.Coordinates.Galaxy <> Infoy.Coordinates.Galaxy Then
-                            If Form1.SortUp = True Then
-                                Return Infoy.Coordinates.Galaxy - Infox.Coordinates.Galaxy
-                            Else
-                                Return Infox.Coordinates.Galaxy - Infoy.Coordinates.Galaxy
-                            End If
+                            Return DirModifier * (Infoy.Coordinates.Galaxy - Infox.Coordinates.Galaxy)
                         End If
                         If Infox.Coordinates.System <> Infoy.Coordinates.System Then
-                            If Form1.SortUp = True Then
-                                Return Infoy.Coordinates.System - Infox.Coordinates.System
-                            Else
-                                Return Infox.Coordinates.System - Infoy.Coordinates.System
-                            End If
+                            Return DirModifier * (Infoy.Coordinates.System - Infox.Coordinates.System)
                         End If
                         If Infox.Coordinates.Planet <> Infoy.Coordinates.Planet Then
-                            If Form1.SortUp = True Then
-                                Return Infoy.Coordinates.Planet - Infox.Coordinates.Planet
-                            Else
-                                Return Infox.Coordinates.Planet - Infoy.Coordinates.Planet
-                            End If
+                            Return DirModifier * (Infoy.Coordinates.Planet - Infox.Coordinates.Planet)
                         End If
                     End If
                 Case "Shortest Distance"
-                    Dim debug0 As Integer = Form1.HomeCoords.Galaxy
-                    Dim debug1 As Integer = Form1.HomeCoords.System
-                    Dim debug2 As Integer = Form1.HomeCoords.Planet
+                    Dim debug0 As Integer = FrmMain.HomeCoords.Galaxy
+                    Dim debug1 As Integer = FrmMain.HomeCoords.System
+                    Dim debug2 As Integer = FrmMain.HomeCoords.Planet
                     If Infox.Coordinates.Str <> Infoy.Coordinates.Str Then
                         'Different coordinates
                         If Math.Abs(debug0 - Infox.Coordinates.Galaxy) <> Math.Abs(debug0 - Infoy.Coordinates.Galaxy) Then
                             'Different coordinates, different galaxy distance
-                            If Form1.SortUp = True Then
-                                Return Math.Abs(debug0 - Infox.Coordinates.Galaxy) - Math.Abs(debug0 - Infoy.Coordinates.Galaxy)
-                            Else
-                                Return Math.Abs(debug0 - Infoy.Coordinates.Galaxy) - Math.Abs(debug0 - Infox.Coordinates.Galaxy)
-                            End If
+                            Return DirModifier * (Math.Abs(debug0 - Infox.Coordinates.Galaxy) - Math.Abs(debug0 - Infoy.Coordinates.Galaxy))
                         Else
                             'Different coordinates, same galaxy distance
                             If Infox.Coordinates.Galaxy <> debug0 Then
                                 'Different coordinates, same galaxy distance, not home galaxy - sort by resources
                                 If Infox.WeightedResources <> Infoy.WeightedResources Then
-                                    If Form1.SortUp = True Then
-                                        Return Infoy.WeightedResources - Infox.WeightedResources
-                                    Else
-                                        Return Infox.WeightedResources - Infoy.WeightedResources
-                                    End If
+                                    Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                                 End If
                             Else
                                 'Different coordinates, same galaxy, home galaxy - check system
                                 If Math.Abs(debug1 - Infox.Coordinates.System) <> Math.Abs(debug1 - Infoy.Coordinates.System) Then
                                     'Different coordinates, same galaxy, home galaxy, different system distance
-                                    If Form1.SortUp = True Then
-                                        Return Math.Abs(debug1 - Infox.Coordinates.System) - Math.Abs(debug1 - Infoy.Coordinates.System)
-                                    Else
-                                        Return Math.Abs(debug1 - Infoy.Coordinates.System) - Math.Abs(debug1 - Infox.Coordinates.System)
-                                    End If
+                                    Return DirModifier * (Math.Abs(debug1 - Infox.Coordinates.System) - Math.Abs(debug1 - Infoy.Coordinates.System))
                                 Else
                                     'Different coordinates, same galaxy, home galaxy, same system distance
                                     If Infox.Coordinates.System <> debug1 Then
                                         'Different coordinates, same galaxy, home galaxy, same system, not home system - sort by resources
                                         If Infox.WeightedResources <> Infoy.WeightedResources Then
-                                            If Form1.SortUp = True Then
-                                                Return Infoy.WeightedResources - Infox.WeightedResources
-                                            Else
-                                                Return Infox.WeightedResources - Infoy.WeightedResources
-                                            End If
+                                            Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                                         End If
                                     Else
                                         'Different coordinates, same galaxy, home galaxy, same system, home system - check planet
                                         If Math.Abs(debug2 - Infox.Coordinates.Planet) <> Math.Abs(debug2 - Infoy.Coordinates.Planet) Then
                                             'Different coordinates, same galaxy, home galaxy, same system, home system, different planet distance
-                                            If Form1.SortUp = True Then
-                                                Return Math.Abs(debug2 - Infox.Coordinates.Planet) - Math.Abs(debug2 - Infoy.Coordinates.Planet)
-                                            Else
-                                                Return Math.Abs(debug2 - Infoy.Coordinates.Planet) - Math.Abs(debug2 - Infox.Coordinates.Planet)
-                                            End If
+                                            Return DirModifier * (Math.Abs(debug2 - Infox.Coordinates.Planet) - Math.Abs(debug2 - Infoy.Coordinates.Planet))
                                         Else
                                             'Different coordinates, same galaxy, home galaxy, same system, home system, same planet distance - sort by resources
-                                            If Form1.SortUp = True Then
-                                                Return Infoy.WeightedResources - Infox.WeightedResources
-                                            Else
-                                                Return Infox.WeightedResources - Infoy.WeightedResources
-                                            End If
+                                            Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                                         End If
                                     End If
                                 End If
@@ -1331,72 +1231,36 @@ Public Class NodeSorter
                         End If
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
                         'Same coordinates - sort by resources
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Metal"
                     If Infox.Metal <> Infoy.Metal Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.Metal - Infox.Metal
-                        Else
-                            Return Infox.Metal - Infoy.Metal
-                        End If
+                        Return DirModifier * (Infoy.Metal - Infox.Metal)
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Crystal"
                     If Infox.Crystal <> Infoy.Crystal Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.Crystal - Infox.Crystal
-                        Else
-                            Return Infox.Crystal - Infoy.Crystal
-                        End If
+                        Return DirModifier * (Infoy.Crystal - Infox.Crystal)
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Deuterium"
                     If Infox.Deuterium <> Infoy.Deuterium Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.Deuterium - Infox.Deuterium
-                        Else
-                            Return Infox.Deuterium - Infoy.Deuterium
-                        End If
+                        Return DirModifier * (Infoy.Deuterium - Infox.Deuterium)
                     ElseIf Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Weighted Resources"
                     If Infox.WeightedResources <> Infoy.WeightedResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.WeightedResources - Infox.WeightedResources
-                        Else
-                            Return Infox.WeightedResources - Infoy.WeightedResources
-                        End If
+                        Return DirModifier * (Infoy.WeightedResources - Infox.WeightedResources)
                     End If
                 Case "Unweighted Resources"
                     If Infox.TotalResources <> Infoy.TotalResources Then
-                        If Form1.SortUp = True Then
-                            Return Infoy.TotalResources - Infox.TotalResources
-                        Else
-                            Return Infox.TotalResources - Infoy.TotalResources
-                        End If
+                        Return DirModifier * (Infoy.TotalResources - Infox.TotalResources)
                     End If
             End Select
-        ElseIf Form1.NodeLevel(tx) = 3 And Form1.NodeLevel(ty) = 3 Then
+        ElseIf FrmMain.NodeLevel(tx) = 3 And FrmMain.NodeLevel(ty) = 3 Then
             If tx.Text.Contains("Research") = True Then
                 Return 1
             ElseIf ty.Text.Contains("Research") = True Then
@@ -1406,7 +1270,7 @@ Public Class NodeSorter
             ElseIf ty.Text.Contains("Fleet") = True Then
                 Return 1
             End If
-        ElseIf Form1.NodeLevel(tx) = 4 And Form1.NodeLevel(ty) = 4 Then
+        ElseIf FrmMain.NodeLevel(tx) = 4 And FrmMain.NodeLevel(ty) = 4 Then
             If tx.Parent.Text.Contains("Defense") Then
                 If tx.Text.Contains("Rocket") Then
                     Return -1
@@ -1502,65 +1366,24 @@ Public Class NodeSorter
 End Class
 
 Public Class Coords
-    Private mString As String
-    Private mGalaxy As Integer = 0
-    Private mSystem As Integer = 0
-    Private mPlanet As Integer = 0
+    Public Property Galaxy As Integer = 0
+    Public Property System As Integer = 0
+    Public Property Planet As Integer = 0
 
-    Public Property Galaxy() As Integer
+    Public Property Str As String
         Get
-            Return mGalaxy
-        End Get
-        Set(ByVal Value As Integer)
-            Value = Nothing
-        End Set
-    End Property
-
-    Public Property System() As Integer
-        Get
-            Return mSystem
-        End Get
-        Set(ByVal Value As Integer)
-            Value = Nothing
-        End Set
-    End Property
-
-    Public Property Planet() As Integer
-        Get
-            Return mPlanet
-        End Get
-        Set(ByVal Value As Integer)
-            Value = Nothing
-        End Set
-    End Property
-
-    Public Property Str() As String
-        Get
-            Return mString
+            Return "[" + Galaxy.ToString + ":" + System.ToString + ":" + Planet.ToString + "]"
         End Get
         Set(ByVal Value As String)
-            mString = Value
-            Value = Value.Trim("[")
-            Value = Value.Trim("]")
-            If InStr(Value, ":") > 0 And InStr(Value, ":") < Value.Length Then
-                mGalaxy = Val(Value.Remove(InStr(Value, ":")))
-                Value = Value.Remove(0, InStr(Value, ":"))
-                If InStr(Value, ":") > 0 And InStr(Value, ":") < Value.Length Then
-                    mSystem = Val(Value.Remove(InStr(Value, ":")))
-                    Value = Value.Remove(0, InStr(Value, ":"))
-                    If Value.Length > 0 Then
-                        mPlanet = Val(Value)
-                    Else
-                        mPlanet = 0
-                    End If
-                Else
-                    mSystem = 0
-                    mPlanet = 0
-                End If
+            Dim Substrings As String() = Value.Replace("]", "").Replace("[", "").Split(":")
+            If Substrings.Length = 3 Then
+                Galaxy = CInt(Substrings(0))
+                System = CInt(Substrings(1))
+                Planet = CInt(Substrings(2))
             Else
-                mGalaxy = 0
-                mSystem = 0
-                mPlanet = 0
+                Galaxy = -1
+                System = -1
+                Planet = -1
             End If
         End Set
     End Property
