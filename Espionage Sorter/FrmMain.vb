@@ -379,25 +379,7 @@
                                 End Select
                                 NewForm.Dispose()
                             Else
-                                If Checknode.Tag.Fleet = True And Tempnode.Tag.Fleet = False Then
-                                    DestroyNode(Tempnode)
-                                ElseIf Checknode.Tag.Fleet = False And Tempnode.Tag.Fleet = True Then
-                                    DestroyNode(Checknode)
-                                ElseIf Checknode.Tag.Defense = True And Tempnode.Tag.Defense = False Then
-                                    DestroyNode(Tempnode)
-                                ElseIf Checknode.Tag.Defense = False And Tempnode.Tag.Defense = True Then
-                                    DestroyNode(Checknode)
-                                ElseIf Checknode.Tag.Research = True And Tempnode.Tag.Research = False Then
-                                    DestroyNode(Tempnode)
-                                ElseIf Tempnode.Tag.Research = False And Tempnode.Tag.Research = True Then
-                                    DestroyNode(Checknode)
-                                ElseIf Checknode.Tag.TotalResources > Tempnode.Tag.TotalResources Then
-                                    DestroyNode(Tempnode)
-                                ElseIf Checknode.Tag.TotalResources < Tempnode.Tag.TotalResources Then
-                                    DestroyNode(Checknode)
-                                Else
-                                    DestroyNode(Checknode)
-                                End If
+                                DestroyNode(Checknode)
                             End If
                             Exit Do
                         End If
@@ -616,9 +598,9 @@
                 ResultTxt = ResultTxt + vbCrLf + vbCrLf + TempNode.Tag.Report()
                 TempNode = TempNode.NextNode
             End While
-        End If
 
-        Clipboard.SetText(ResultTxt)
+            Clipboard.SetText(ResultTxt)
+        End If
     End Sub
 End Class
 
