@@ -357,7 +357,7 @@
                         Values.Research = True
                         Values.Weapon = ParseSubItem(Report, "Weapons Technology")
                         Values.Shield = ParseSubItem(Report, "Shielding Technology")
-                        Values.Armor = ParseSubItem(Report, "Armour Technology")
+                        Values.Armor = ParseSubItem(Report, "Armor Technology")
                     End If
                 End If
             End If
